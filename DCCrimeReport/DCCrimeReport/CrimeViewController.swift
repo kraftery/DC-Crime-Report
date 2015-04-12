@@ -14,4 +14,18 @@ class CrimeViewController: UIViewController {
     @IBOutlet weak var methodLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var dateTimeLabel: UILabel!
+    
+    var offenseText = ""
+    var methodText = ""
+    var locationText = ""
+    var dateTimeText = ""
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        offenseLabel.text = offenseText
+        methodLabel.text = methodText
+        locationLabel.text = locationText
+        dateTimeLabel.text = dateTimeText
+    }
 }

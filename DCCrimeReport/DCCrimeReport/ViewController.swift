@@ -35,6 +35,20 @@ class ViewController: UIViewController, NSXMLParserDelegate, CLLocationManagerDe
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         
+        //----------------------------------------------------------------------------------
+        let pinAnnotation = CrimePinAnnotation()
+        let location = CLLocationCoordinate2DMake(38.9047, -77.0164);
+        let crime = Crime()
+        crime.offense = "Homicide"
+        crime.method = "Knife"
+        crime.blockSiteAddress = "1100 - 1199 BLOCK OF 14TH STREET NW"
+        crime.reportedDateTime = "2015-04-10T00:00:00-04:00"
+        pinAnnotation.setCoordinate(location)
+        pinAnnotation.title = crime.offense
+        pinAnnotation.crime = crime
+        self.mapView.addAnnotation(pinAnnotation)
+        //----------------------------------------------------------------------------------
+        
         let url:NSURL = NSURL(string: "http://data.octo.dc.gov/feeds/crime_incidents/crime_incidents_current.xml")!
         parser = NSXMLParser(contentsOfURL: url)!
         parser.delegate = self
@@ -147,13 +161,16 @@ class ViewController: UIViewController, NSXMLParserDelegate, CLLocationManagerDe
         
         if let annotation = view.annotation as? CrimePinAnnotation {
             
-            let vc: CrimeViewController = CrimeViewController()
-            vc.offenseLabel.text = annotation.crime.offense
-            vc.methodLabel.text = annotation.crime.method
-            vc.locationLabel.text = annotation.crime.blockSiteAddress
-            vc.dateTimeLabel.text = annotation.crime.reportedDateTime
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("CrimeViewController") as CrimeViewController
+            //let vc: CrimeViewController = CrimeViewController()
             
-            presentViewController(vc, animated: true, completion: nil)
+            vc.offenseText = annotation.crime.offense
+            vc.methodText = annotation.crime.method
+            vc.locationText = annotation.crime.blockSiteAddress
+            vc.dateTimeText = annotation.crime.reportedDateTime
+            
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
