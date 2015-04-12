@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
 
-class ViewController: UIViewController, NSXMLParserDelegate {
+class ViewController: UIViewController, NSXMLParserDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
 
     var parser: NSXMLParser = NSXMLParser()
     var crimes: [Crime] = []
@@ -18,9 +20,20 @@ class ViewController: UIViewController, NSXMLParserDelegate {
     var blockSiteAddress = String()
     var eName = String()
     
+    var locationManager: CLLocationManager!
+    @IBOutlet weak var mapView: MKMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        self.title = "Recent Crimes"
+        mapView.delegate = self
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         
         let url:NSURL = NSURL(string: "http://data.octo.dc.gov/feeds/crime_incidents/crime_incidents_current.xml")!
         parser = NSXMLParser(contentsOfURL: url)!
@@ -33,6 +46,22 @@ class ViewController: UIViewController, NSXMLParserDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    /* MARK - CLLocationManagerDelegate */
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        
+        self.locationManager.stopUpdatingLocation()
+        
+        let userCoordinates: CLLocationCoordinate2D = manager.location.coordinate
+        let region = MKCoordinateRegion(center: userCoordinates, span: MKCoordinateSpanMake(0.05, 0.05))
+        mapView.setRegion(region, animated: true)
+    }
+    
+    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        
+        println("Error while updating location " + error.localizedDescription)
+    }
+    
+    /* MARK - NSXMLParserDelegate */
     func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!,qualifiedName qName: String!, attributes attributeDict: [NSObject : AnyObject]!) {
         
         eName = elementName
@@ -72,6 +101,59 @@ class ViewController: UIViewController, NSXMLParserDelegate {
             crime.method = method
             crime.reportedDateTime = reportedDateTime
             crimes.append(crime)
+            
+            //let s = blockSiteAddress.substringFromIndex(advance(blockSiteAddress.startIndex,7)) + " Washington, DC"
+            let s = blockSiteAddress + " Washington, DC"
+
+            CLGeocoder().geocodeAddressString(s, completionHandler: {(placemarks, error)->Void in
+                if error == nil {
+                    
+                    let placemark = placemarks[0] as CLPlacemark
+                    self.placePin(placemark.location, crime: crime)
+                }
+            })
+
+        }
+    }
+    
+    func placePin(location: CLLocation!, crime: Crime!) {
+        
+        let pinAnnotation = CrimePinAnnotation()
+        pinAnnotation.setCoordinate(location.coordinate)
+        pinAnnotation.title = crime.offense
+        pinAnnotation.crime = crime
+        self.mapView.addAnnotation(pinAnnotation)
+    }
+    
+    /* MARK - MKMapViewDelegate */
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        if annotation is CrimePinAnnotation {
+            let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "myPin")
+            
+            pinAnnotationView.canShowCallout = true
+            pinAnnotationView.animatesDrop = true
+            
+            let infoButton = UIButton.buttonWithType(UIButtonType.DetailDisclosure) as UIButton
+            
+            pinAnnotationView.leftCalloutAccessoryView = infoButton
+            
+            return pinAnnotationView
+        }
+        
+        return nil
+    }
+    
+    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
+        
+        if let annotation = view.annotation as? CrimePinAnnotation {
+            
+            let vc: CrimeViewController = CrimeViewController()
+            vc.offenseLabel.text = annotation.crime.offense
+            vc.methodLabel.text = annotation.crime.method
+            vc.locationLabel.text = annotation.crime.blockSiteAddress
+            vc.dateTimeLabel.text = annotation.crime.reportedDateTime
+            
+            presentViewController(vc, animated: true, completion: nil)
         }
     }
 }
