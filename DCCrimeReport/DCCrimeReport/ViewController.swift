@@ -28,6 +28,9 @@ class ViewController: UIViewController, NSXMLParserDelegate, CLLocationManagerDe
         // Do any additional setup after loading the view, typically from a nib.
         
         self.title = "Recent Crimes"
+        let reportButton = UIBarButtonItem(title: "Report", style: UIBarButtonItemStyle.Plain, target: self, action: "report")
+        self.navigationItem.leftBarButtonItem = reportButton
+        
         mapView.delegate = self
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -58,6 +61,14 @@ class ViewController: UIViewController, NSXMLParserDelegate, CLLocationManagerDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func report() {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("ReportViewController") as ReportViewController
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     /* MARK - CLLocationManagerDelegate */

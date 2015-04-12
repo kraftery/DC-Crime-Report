@@ -14,6 +14,7 @@ class CrimeViewController: UIViewController {
     @IBOutlet weak var methodLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var dateTimeLabel: UILabel!
+    var phoneButton: UIBarButtonItem!
     
     var offenseText = ""
     var methodText = ""
@@ -27,5 +28,13 @@ class CrimeViewController: UIViewController {
         methodLabel.text = methodText
         locationLabel.text = locationText
         dateTimeLabel.text = dateTimeText
+        
+        phoneButton = UIBarButtonItem(title: "Tip", style: UIBarButtonItemStyle.Plain, target: self, action: "tip")
+        self.navigationItem.rightBarButtonItem = phoneButton
+    }
+    
+    func tip() {
+        let url:NSURL = NSURL(string: "telprompt://2027279099")!
+        UIApplication.sharedApplication().openURL(url)
     }
 }
