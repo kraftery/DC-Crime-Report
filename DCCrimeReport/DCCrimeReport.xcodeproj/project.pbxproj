@@ -13,6 +13,7 @@
 		B3BD2AB21ADA075800A2CC2C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3BD2AB11ADA075800A2CC2C /* Images.xcassets */; };
 		B3BD2AB51ADA075800A2CC2C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3BD2AB31ADA075800A2CC2C /* LaunchScreen.xib */; };
 		B3BD2AC11ADA075800A2CC2C /* DCCrimeReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BD2AC01ADA075800A2CC2C /* DCCrimeReportTests.swift */; };
+		B3BD2ACB1ADA0EBF00A2CC2C /* Crime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BD2ACA1ADA0EBF00A2CC2C /* Crime.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		B3BD2ABA1ADA075800A2CC2C /* DCCrimeReportTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DCCrimeReportTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3BD2ABF1ADA075800A2CC2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3BD2AC01ADA075800A2CC2C /* DCCrimeReportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCCrimeReportTests.swift; sourceTree = "<group>"; };
+		B3BD2ACA1ADA0EBF00A2CC2C /* Crime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crime.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			children = (
 				B3BD2AAA1ADA075700A2CC2C /* AppDelegate.swift */,
 				B3BD2AAC1ADA075700A2CC2C /* ViewController.swift */,
+				B3BD2ACA1ADA0EBF00A2CC2C /* Crime.swift */,
 				B3BD2AAE1ADA075700A2CC2C /* Main.storyboard */,
 				B3BD2AB11ADA075800A2CC2C /* Images.xcassets */,
 				B3BD2AB31ADA075800A2CC2C /* LaunchScreen.xib */,
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3BD2AAD1ADA075700A2CC2C /* ViewController.swift in Sources */,
+				B3BD2ACB1ADA0EBF00A2CC2C /* Crime.swift in Sources */,
 				B3BD2AAB1ADA075700A2CC2C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
