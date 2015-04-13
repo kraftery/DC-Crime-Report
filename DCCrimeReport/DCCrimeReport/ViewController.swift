@@ -39,7 +39,7 @@ class ViewController: UIViewController, NSXMLParserDelegate, CLLocationManagerDe
         locationManager.startUpdatingLocation()
         
         //----------------------------------------------------------------------------------
-        let pinAnnotation = CrimePinAnnotation()
+        /*let pinAnnotation = CrimePinAnnotation()
         let location = CLLocationCoordinate2DMake(38.9047, -77.0164);
         let crime = Crime()
         crime.offense = "Homicide"
@@ -49,7 +49,7 @@ class ViewController: UIViewController, NSXMLParserDelegate, CLLocationManagerDe
         pinAnnotation.setCoordinate(location)
         pinAnnotation.title = crime.offense
         pinAnnotation.crime = crime
-        self.mapView.addAnnotation(pinAnnotation)
+        self.mapView.addAnnotation(pinAnnotation)*/
         //----------------------------------------------------------------------------------
         
         let url:NSURL = NSURL(string: "http://data.octo.dc.gov/feeds/crime_incidents/crime_incidents_current.xml")!
